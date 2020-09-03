@@ -1,0 +1,43 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Maps_Panel : MonoBehaviour, IPanel
+{
+    public RawImage mapImage;
+    public InputField noteField;
+    public string apiKEY = "AIzaSyDIJ9XX2ZvRKCJcFRrl-lRanEtFUow4piM&signature=NZMTsRQ98_nbqv4GNcrJJwjZAKA=";
+    public string urlapi= "https://maps.googleapis.com/maps/api/staticmap?";
+    public string zoomsize = "&zoom=13&size=400x400&key=";
+    public string cen = "center=";
+    public string imgSize;
+    public string xCord;
+    public string yCord;
+
+    public void OnEnable()
+    {
+        urlapi = urlapi + cen + xCord + "," + yCord + zoomsize + apiKEY;
+        StartCoroutine(LocatonRoutine());
+    }
+    IEnumerator LocatonRoutine()
+    {
+        using (WWW maplocal = new WWW(urlapi))
+        {
+            yield return maplocal;
+            if(maplocal.error != null)
+            {
+                Debug.Log("Map Error =  " + maplocal);
+            }
+            mapImage.texture = maplocal.texture;
+        }
+        
+       
+    }
+
+    public void ProcessInfo()
+    {
+       
+    }
+
+}
